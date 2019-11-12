@@ -22,8 +22,8 @@ class Sidebar {
   	elSidebarToggle.addEventListener('click', event => {
   		event.preventDefault();
   		let elBodyClassList = document.body.classList;
-  		elBodyClassList.contains('sidebar-open') ? elBodyClassList.remove('sidebar-open') : elBodyClassList.add('sidebar-open');
-  		elBodyClassList.contains('sidebar-collapse') ? elBodyClassList.remove('sidebar-collapse') : elBodyClassList.add('sidebar-collapse');
+  		elBodyClassList.toggle('sidebar-open');
+  		elBodyClassList.toggle('sidebar-collapse');
   	});
   }
 
