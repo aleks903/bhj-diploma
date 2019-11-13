@@ -13,7 +13,7 @@ class RegisterForm extends AsyncForm {
   onSubmit( options ) {
   	User.register(options, (err, data) => {
   		console.log(err);
-  		console.log(data);
+  		console.log(JSON.parse(data));
   	});
 //  	this.sibmit();
   }

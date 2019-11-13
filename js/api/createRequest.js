@@ -25,6 +25,8 @@
  //      console.log( 'Данные, если нет ошибки', response );
  //    }
 const createRequest = (options = {}, callback) => {
+	console	.log(options);
+
 	const xhr = new XMLHttpRequest;
 	let method = options.method;
 	let url, data, mail, password;
@@ -34,8 +36,11 @@ const createRequest = (options = {}, callback) => {
 	} else {
 		const formData = new FormData;
 		url = options.url;
-		formData.append('mail', options.data.mail);
+		formData.append('email', options.data.email);
 		formData.append('password', options.data.password);
+
+console.log('fff');
+console.log(formData);
 
 		data = formData;
 	}
@@ -43,8 +48,10 @@ const createRequest = (options = {}, callback) => {
 	xhr.addEventListener('readystatechange', function () {
 		if(this.readyState == xhr.DONE) {
 			if (this.status == 200) {
-				console.log('ok');
-				callback(null, this.responseType);
+				console.log('createRequest');
+				console.log(this.responseText);
+
+				callback(null, this.responseText);
 			} else {
 				console.log('no');
 				callback(this.responseType, null);
@@ -55,12 +62,15 @@ const createRequest = (options = {}, callback) => {
 	try {
 		xhr.withCredentials = true;
 		//if(options.headers)	{
-		xhr.setRequestHeader('Content-Type', 'application/json');
+		//xhr.setRequestHeader('Content-Type', 'application/json');
 			//xhr.setRequestHeader('Content-Type', options.headers['Content-type']);
 		//}
-		xhr.responseType = 'json';
+		//xhr.responseType = 'json';
 
 		xhr.open(method, url);
+console.log('send.data');
+console.log(data);
+
 		xhr.send(data);
 
 		
