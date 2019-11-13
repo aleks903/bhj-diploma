@@ -18,6 +18,7 @@ class Entity {
       data: data,
       method: 'GET',
     }, (err, data) => {callback(err, data);});
+    return xhr;
   }
 
   /**
@@ -26,12 +27,13 @@ class Entity {
    * что наследуется от Entity)
    * */
   static create( data, callback = f => f ) {
-      const xhr = createRequest({
+    let modData = Object.assign({_method: 'PUT'}, data);
+    const xhr = createRequest({
       url: this.HOST + this.URL,
-      data: data,
-      method: 'PUT',
+      data: modData,
+      method: 'POST',
     }, (err, data) => {callback(err, data);});
-
+    return xhr;
   }
 
   /**
@@ -39,7 +41,13 @@ class Entity {
    * (в зависимости от того, что наследуется от Entity)
    * */
   static get( id = '', data, callback = f => f ) {
-
+    let modData = Object.assign({id}, data);
+    const xhr = createRequest({
+      url: this.HOST + this.URL,
+      data: modData,
+      method: 'GET',
+    }, (err, data) => {callback(err, data);});
+    return xhr;
   }
 
   /**
@@ -47,7 +55,13 @@ class Entity {
    * (в зависимости от того, что наследуется от Entity)
    * */
   static remove( id = '', data, callback = f => f ) {
-
+    let modData = Object.assign({id}, {_method: 'DELETE'}, data);
+    const xhr = createRequest({
+      url: this.HOST + this.URL,
+      data: modData,
+      method: 'POST',
+    }, (err, data) => {callback(err, data);});
+    return xhr;
   }
 }
 

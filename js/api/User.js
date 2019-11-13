@@ -5,12 +5,19 @@
  * Имеет свойство URL, равное '/user'.
  * */
 class User {
+
+  HOST = 'https://bhj-diplom.letsdocode.ru';
+  URL = '/user';
   /**
    * Устанавливает текущего пользователя в
    * локальном хранилище.
    * */
   static setCurrent(user) {
-
+//const user = {
+//  id: 12,
+//  name: 'Vlad'
+//};
+    localStorage.setItem('user',JSON.stringify(user));
   }
 
   /**
@@ -18,7 +25,13 @@ class User {
    * пользователе из локального хранилища.
    * */
   static unsetCurrent() {
-
+//const user = {
+//  id: 12,
+//  name: 'Vlad'
+//};
+    if(localStorage.getItem('user')) {
+      localStorage.removeItem('user');
+    }
   }
 
   /**
@@ -26,7 +39,7 @@ class User {
    * из локального хранилища
    * */
   static current() {
-
+    return JSON.parse(localStorage.getItem('user'));
   }
 
   /**
@@ -34,7 +47,24 @@ class User {
    * авторизованном пользователе.
    * */
   static fetch( data, callback = f => f ) {
-
+    //this.unsetCurrent();
+    let url =this.URL + '/current';
+    const xhr = createRequest({
+      url: this.HOST + url,
+      data: data,
+      method: 'GET',
+    }, (err, data) => {
+      if(!err) {
+        if(data.success) {
+         this.setCurrent({id: data.user.id, name: data.user.name});
+        } else {
+          this.unsetCurrent();
+        }
+      }
+      callback(err, data);
+    });
+    //this.setCurrent(xhr);
+    return xhr;
   }
 
   /**
@@ -44,7 +74,26 @@ class User {
    * User.setCurrent.
    * */
   static login( data, callback = f => f ) {
+// const data = {
+//   email: 'test@test.ru',
+//   password: 'abracadabra'
+// }
+  let url =this.URL + '/login';
+  const xhr = createRequest({
+    url: this.HOST + url,
+    data: data,
+    method: 'POST',
+  }, (err, data) => {
+    if(!err) {
+      if(data.success) {
+        this.setCurrent({id: data.user.id, name: data.user.name});
+      }
+    }
 
+    callback(err, data);
+  });
+    //this.setCurrent(xhr);
+  return xhr;
   }
 
   /**
@@ -54,7 +103,27 @@ class User {
    * User.setCurrent.
    * */
   static register( data, callback = f => f ) {
+// const data = {
+//   name: 'Vlad',
+//   email: 'test@test.ru',
+//   password: 'abracadabra'
+// }
+    let url = this.URL + '/register';
+    const xhr = createRequest({
+      url: this.HOST + url,
+      data: data,
+      method: 'POST',
+    }, (err, data) => {
+      if(!err) {
+        if(data.success) {
+          this.setCurrent({id: data.user.id, name: data.user.name});
+        }
+      }
 
+      callback(err, data);
+    });
+    //this.setCurrent(xhr);
+    return xhr;
   }
 
   /**
@@ -63,5 +132,21 @@ class User {
    * */
   static logout( data, callback = f => f ) {
 
+    let url =this.URL + '/logout';
+    const xhr = createRequest({
+      url: this.HOST + url,
+      data: data,
+      method: 'POST',
+    }, (err, data) => {
+      if(!err) {
+        if(data.success) {
+          this.unsetCurrent();
+        }
+      }
+
+      callback(err, data);
+    });
+    //this.setCurrent(xhr);
+    return xhr;
   }
 }
