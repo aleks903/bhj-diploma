@@ -25,6 +25,7 @@
  //      console.log( 'Данные, если нет ошибки', response );
  //    }
 const createRequest = (options = {}, callback) => {
+	console.log('createRequest');
 	console	.log(options);
 
 	const xhr = new XMLHttpRequest;
@@ -32,15 +33,25 @@ const createRequest = (options = {}, callback) => {
 	let url, data, mail, password;
 
 	if (method === 'GET') {
-		url = `${options.url}?mail=${options.data.mail}&password=${options.data.password}`;
+    if(options.data) {
+    	console.log('createRequest method GET');
+    let urlOption = Object.entries(options.data)
+      .map(([key, value]) => `${key}=${value}`)
+      .join('&');
+
+		url = `${options.url}?${urlOption}`;
+		console.log(url);
+	}
 	} else {
 		const formData = new FormData;
 		url = options.url;
-		formData.append('email', options.data.email);
-		formData.append('password', options.data.password);
-
-console.log('fff');
-console.log(formData);
+		
+		for (let item in options.data) {
+			formData.append(item, options.data[item]);
+		}
+		// formData.append('name', options.data.name);
+		// formData.append('email', options.data.email);
+		// formData.append('password', options.data.password);
 
 		data = formData;
 	}
@@ -51,7 +62,7 @@ console.log(formData);
 				console.log('createRequest');
 				console.log(this.responseText);
 
-				callback(null, this.responseText);
+				callback(null, JSON.parse(this.responseText));
 			} else {
 				console.log('no');
 				callback(this.responseType, null);
@@ -67,11 +78,19 @@ console.log(formData);
 		//}
 		//xhr.responseType = 'json';
 
-		xhr.open(method, url);
-console.log('send.data');
-console.log(data);
+//xhr.open('POST','https://bhj-diplom.letsdocode.ru/user');
 
-		xhr.send(data);
+		xhr.open(method, url);
+if (data != undefined) {
+		console.log('send.data');
+		console.log(data);
+	xhr.send(data);
+} else {
+			console.log('send.data');
+			console.log(data);
+	xhr.send();
+}
+		
 
 		
 	}

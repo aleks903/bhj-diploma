@@ -4,8 +4,9 @@
  * Имеет свойство HOST, равно значению Entity.HOST.
  * Имеет свойство URL, равное '/user'.
  * */
-  HOST = 'https://bhj-diplom.letsdocode.ru';
-  URL = '/user';
+HOST = 'https://bhj-diplom.letsdocode.ru';
+URL = '/user';
+
 class User {
 
 
@@ -18,7 +19,7 @@ class User {
 //  id: 12,
 //  name: 'Vlad'
 //};
-    localStorage.setItem('user',JSON.stringify(user));
+    localStorage.setItem('user', JSON.stringify(user));
   }
 
   /**
@@ -48,21 +49,26 @@ class User {
    * авторизованном пользователе.
    * */
   static fetch( data, callback = f => f ) {
-    //this.unsetCurrent();
-    let url = URL + '/current';
-    const xhr = createRequest(Object.assign({url: HOST + url, method: 'GET'}, data)
-      , (err, data) => {
-      if(!err) {
-        if(data.success) {
-         this.setCurrent({id: data.user.id, name: data.user.name});
-        } else {
-          this.unsetCurrent();
-        }
-      }
-      callback(err, data);
-    });
-    //this.setCurrent(xhr);
-    return xhr;
+    if (data) {
+      let url = URL + '/current';
+      const xhr = createRequest(
+        Object.assign({url: HOST + url, method: 'GET'}, {data})
+        , (err, data) => {
+
+
+          if(!err) {
+          console.log('user.fetch');
+          console.log(data);
+            if(data.success) {
+
+              this.setCurrent({id: data.user.id, name: data.user.name, email: data.user.email});
+            } else {
+              this.unsetCurrent();
+            }
+          }
+          callback(err, data);
+        });
+    }
   }
 
   /**
@@ -80,9 +86,14 @@ class User {
   const xhr = createRequest(
     Object.assign({url: HOST + url, method: 'POST'}, data)
     , (err, data) => {
+      //let jData = JSON.parse(data);
+      console.log('User.login');
+      console.log(data.user.id);
+      
     if(!err) {
       if(data.success) {
-        this.setCurrent({id: data.user.id, name: data.user.name});
+        
+        this.setCurrent({id: data.user.id, name: data.user.name, email: data.user.email});
       }
     }
 
@@ -104,7 +115,6 @@ class User {
 //   email: 'test@test.ru',
 //   password: 'abracadabra'
 // }
-console.log(data);
 
     let url = URL + '/register';
     const xhr = createRequest(
@@ -113,7 +123,7 @@ console.log(data);
         console.log(data + 'user.register');
         if(!err) {
           if(data.success) {
-            this.setCurrent({id: data.user.id, name: data.user.name});
+            this.setCurrent({id: data.user.id, name: data.user.name, email: data.user.email});
           }
         }
         callback(err, data);
@@ -135,6 +145,7 @@ console.log(data);
         if(!err) {
           if(data.success) {
             this.unsetCurrent();
+            App.setState('init');
           }
         }
         callback(err, data);
