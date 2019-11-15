@@ -3,13 +3,13 @@
  * Управляет счетами пользователя.
  * Имеет свойство URL со значением '/account'
  * */
- URL = '/account';
+	//URL = '/account';
+
+
+
 
 class Account extends Entity {
 
-  
-  URL = URL;
-  
-	    
-	
 }
+	Account.HOST = Entity.HOST;
+	Account.URL = '/account';

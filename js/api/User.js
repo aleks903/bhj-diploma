@@ -4,10 +4,10 @@
  * Имеет свойство HOST, равно значению Entity.HOST.
  * Имеет свойство URL, равное '/user'.
  * */
-HOST = 'https://bhj-diplom.letsdocode.ru';
-URL = '/user';
+
 
 class User {
+  
 
 
   /**
@@ -49,16 +49,20 @@ class User {
    * авторизованном пользователе.
    * */
   static fetch( data, callback = f => f ) {
+          console.log('user.fetch');
+          console.log(data);    
+          console.log(this.HOST);
+          console.log(this.URL);
+
     if (data) {
-      let url = URL + '/current';
+      let url = this.URL + '/current';
       const xhr = createRequest(
-        Object.assign({url: HOST + url, method: 'GET'}, {data})
+        Object.assign({url: this.HOST + url, method: 'GET'}, {data})
         , (err, data) => {
 
 
           if(!err) {
-          console.log('user.fetch');
-          console.log(data);
+
             if(data.success) {
 
               this.setCurrent({id: data.user.id, name: data.user.name, email: data.user.email});
@@ -82,9 +86,12 @@ class User {
 //   email: 'test@test.ru',
 //   password: 'abracadabra'
 // }
-  let url = URL + '/login';
+console.log('user.login');
+console.log(this.HOST);
+
+  let url = this.URL + '/login';
   const xhr = createRequest(
-    Object.assign({url: HOST + url, method: 'POST'}, data)
+    Object.assign({url: this.HOST + url, method: 'POST'}, {data})
     , (err, data) => {
       //let jData = JSON.parse(data);
       console.log('User.login');
@@ -100,7 +107,6 @@ class User {
     callback(err, data);
   });
     //this.setCurrent(xhr);
-  return xhr;
   }
 
   /**
@@ -116,9 +122,9 @@ class User {
 //   password: 'abracadabra'
 // }
 
-    let url = URL + '/register';
+    let url = this.URL + '/register';
     const xhr = createRequest(
-      Object.assign({url: HOST + url, method: 'POST'}, data)
+      Object.assign({url: this.HOST + url, method: 'POST'}, {data})
       , (err, data) => {
         console.log(data + 'user.register');
         if(!err) {
@@ -129,7 +135,6 @@ class User {
         callback(err, data);
       });
     //this.setCurrent(xhr);
-    return xhr;
   }
 
   /**
@@ -138,9 +143,9 @@ class User {
    * */
   static logout( data, callback = f => f ) {
 
-    let url = URL + '/logout';
+    let url = this.URL + '/logout';
     const xhr = createRequest(
-      Object.assign({url: HOST + url, method: 'POST'}, data)
+      Object.assign({url: this.HOST + url, method: 'POST'}, {data})
       , (err, data) => {
         if(!err) {
           if(data.success) {
@@ -151,6 +156,8 @@ class User {
         callback(err, data);
       });
     //this.setCurrent(xhr);
-    return xhr;
   }
 }
+
+  User.HOST = Entity.HOST;
+  User.URL = '/user';

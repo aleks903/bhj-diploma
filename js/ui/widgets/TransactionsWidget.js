@@ -11,7 +11,15 @@ class TransactionsWidget {
    * необходимо выкинуть ошибку.
    * */
   constructor( element ) {
-
+    if(!element) {
+      throw new Error('Передан пустой элемент');
+    } else {
+      this.element = element;
+      this.registerEvents();
+      // this.update();
+      // this.currentAccountId = null;  
+    }
+    
   }
   /**
    * Регистрирует обработчики нажатия на
@@ -20,6 +28,16 @@ class TransactionsWidget {
    * экземпляра окна
    * */
   registerEvents() {
-
+    this.element.querySelector('.create-income-button')
+    .addEventListener('click', (event) => {
+      event.preventDefault();
+      App.getModal('newIncome').open();
+    });
+    
+    this.element.querySelector('.create-expense-button')
+    .addEventListener('click', (event) => {
+      event.preventDefault();
+      App.getModal('newExpense').open();
+    });
   }
 }

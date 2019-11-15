@@ -59,29 +59,19 @@ class AccountsWidget {
    * метода renderItem()
    * */
   update() {
+
     if (User.current()) {
       Account.list(User.current(), (err, data) => {
-        if (!err) {
+        //if (!err) {
           console.log('AccountsWidget.update');
           console.log(data);
-          // Для каждого элемента в полученном массиве счетов вызывает метод render()
-          // Перед отрисовкой вызывает метод clear() для очистки существующих счетов
-        }
+          if (data.success) {
+          this.clear();
+          for (let i = 0; i < data.data.length; i++) {
+              this.renderItem(data.data[i]);
+            }
+          }
       });
-// if (User.current()) {
-//       Account.list({}, (err, response) => {
-//         if (err) {
-//           return;
-//         }
-//         if (!response.data) {
-//           return;
-//         }
-//         this.clear();
-//         this.render(response.data);
-//       });
-//     } else {
-//       return;
-//     }
     }
   }
 
@@ -141,7 +131,7 @@ class AccountsWidget {
    * AccountsWidget.getAccountHTML HTML-код элемента
    * и добавляет его внутрь элемента виджета
    * */
-  renderItem( item ) {
+  renderItem(item) {
     this.element.insertAdjacentElement('beforeEnd', this.getAccountHTML(item));
   }
 }

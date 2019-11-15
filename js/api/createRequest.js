@@ -25,41 +25,36 @@
  //      console.log( 'Данные, если нет ошибки', response );
  //    }
 const createRequest = (options = {}, callback) => {
-	console.log('createRequest');
-	console	.log(options);
+console.log('createRequest options');
+console.log(options);
 
-	const xhr = new XMLHttpRequest;
+	let xhr = new XMLHttpRequest;
 	let method = options.method;
-	let url, data, mail, password;
+	let url;
+	let formData;
 
 	if (method === 'GET') {
+    
     if(options.data) {
-    	console.log('createRequest method GET');
-    let urlOption = Object.entries(options.data)
-      .map(([key, value]) => `${key}=${value}`)
-      .join('&');
+    	let urlOption = Object.entries(options.data)
+    	.map(([key, value]) => `${key}=${value}`)
+    	.join('&');
+    	url = `${options.url}?${urlOption}`;
+    }
 
-		url = `${options.url}?${urlOption}`;
-		console.log(url);
-	}
-	} else {
-		const formData = new FormData;
+  } else {
+  	formData = new FormData();
 		url = options.url;
 		
 		for (let item in options.data) {
 			formData.append(item, options.data[item]);
 		}
-		// formData.append('name', options.data.name);
-		// formData.append('email', options.data.email);
-		// formData.append('password', options.data.password);
-
-		data = formData;
 	}
 
 	xhr.addEventListener('readystatechange', function () {
 		if(this.readyState == xhr.DONE) {
 			if (this.status == 200) {
-				console.log('createRequest');
+				console.log('createRequest.responseText');
 				console.log(this.responseText);
 
 				callback(null, JSON.parse(this.responseText));
@@ -80,21 +75,23 @@ const createRequest = (options = {}, callback) => {
 
 //xhr.open('POST','https://bhj-diplom.letsdocode.ru/user');
 
+console.log(url);
+
 		xhr.open(method, url);
-if (data != undefined) {
+if (formData != undefined) {
 		console.log('send.data');
-		console.log(data);
-	xhr.send(data);
-} else {
-			console.log('send.data');
-			console.log(data);
-	xhr.send();
-}
+		xhr.send(formData);
+ } else {
+ 			console.log('form data undefined');
+
+ 	xhr.send();
+ }
 		
 
 		
 	}
 	catch (e) {
+		console.log(e);
 		callback(e);
 	}
 };

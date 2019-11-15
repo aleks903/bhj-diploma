@@ -13,8 +13,11 @@ class App {
     this.content = document.querySelector( '.content-wrapper' );
 
     this.initPages();
+
     this.initForms();
+
     this.initWidgets();
+
     this.initModals();
 
     Sidebar.init();
@@ -31,7 +34,8 @@ class App {
    * состояние 'init'
    * */
   static initUser() {
-    User.fetch(User.current(), () =>
+    let clUser = User.fetch.bind(User);
+    clUser(User.current(), () =>
       this.setState( User.current() ? 'user-logged' : 'init' )
     );
   }
