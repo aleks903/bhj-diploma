@@ -19,9 +19,11 @@ class Sidebar {
    * */
   static initToggleButton() {
   	let elSidebarToggle = document.querySelector('.sidebar-toggle');
-  	elSidebarToggle.addEventListener('click', event => {
+  	
+    elSidebarToggle.addEventListener('click', event => {
   		event.preventDefault();
-  		let elBodyClassList = document.body.classList;
+  		
+      let elBodyClassList = document.body.classList;
   		elBodyClassList.toggle('sidebar-open');
   		elBodyClassList.toggle('sidebar-collapse');
   	});
@@ -39,17 +41,14 @@ class Sidebar {
       event.preventDefault();
       App.getModal('login').open();
     });
+
     document.querySelector('.menu-item_register').addEventListener('click', (event) => {
       event.preventDefault();
       App.getModal('register').open();
     });
+
     document.querySelector('.menu-item_logout').addEventListener('click', (event) => {
       event.preventDefault();
-      // User.logout({}, ( err, response ) => {
-      //   if ( response && response.success ) {
-      //     App.setState( 'init' );
-      //   }
-      // })
       User.logout();
     });
   }

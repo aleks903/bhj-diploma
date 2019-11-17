@@ -12,16 +12,15 @@ class CreateAccountForm extends AsyncForm{
    * */
   onSubmit( options ) {
   	Account.create(options, (err, data) => {
-  	//let response = JSON.parse(data);
-    //let response = data;
-  		if (data.success) {
-  			this.element.reset();
-  			App.update();
-  			let modal = new Modal(this.element.closest('.modal'));
+      if (data.success) {
+        this.element.reset();
+        App.update();
+
+        let modal = new Modal(this.element.closest('.modal'));
   			modal.close();
-  		} else {
-  			alert(response.error);
-  			return;
+      } else {
+        alert(response.error);
+        return;
   		}
   	});
   }

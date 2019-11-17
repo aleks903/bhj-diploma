@@ -16,8 +16,6 @@ class TransactionsWidget {
     } else {
       this.element = element;
       this.registerEvents();
-      // this.update();
-      // this.currentAccountId = null;  
     }
     
   }

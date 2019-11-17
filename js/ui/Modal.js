@@ -17,10 +17,8 @@ class Modal {
     if(!element) {
       throw new Error( 'Элемент не существует' );
     }
-    this.element = element;
 
-    //console.log(this.element);
-    
+    this.element = element;
     this.registerEvents();
   }
 
@@ -32,6 +30,7 @@ class Modal {
   registerEvents() {
     this.onClose = this.onClose.bind(this);
     this.elDismissModal = this.element.querySelectorAll('[data-dismiss=modal]');
+
     for (let i = 0; i < this.elDismissModal.length; i++) {
       this.elDismissModal[i].addEventListener('click', this.onClose);
     }

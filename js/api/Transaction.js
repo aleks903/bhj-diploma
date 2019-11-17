@@ -4,5 +4,8 @@
  * Имеет свойство URL со значением '/transaction'
  * */
 class Transaction extends Entity {
-	URL = '/transaction';
+
 }
+
+Transaction.HOST = 'https://bhj-diplom.letsdocode.ru';
+Transaction.URL = '/transaction';

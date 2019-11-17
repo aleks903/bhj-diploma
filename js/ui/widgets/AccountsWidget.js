@@ -21,7 +21,6 @@ class AccountsWidget {
       this.update();
       this.currentAccountId = null;  
     }
-    
   }
 
   /**
@@ -45,7 +44,6 @@ class AccountsWidget {
         this.onSelectAccount(event.target);
       });
     }
-
   }
 
   /**
@@ -59,18 +57,15 @@ class AccountsWidget {
    * метода renderItem()
    * */
   update() {
-
     if (User.current()) {
       Account.list(User.current(), (err, data) => {
-        //if (!err) {
-          console.log('AccountsWidget.update');
-          console.log(data);
-          if (data.success) {
+
+        if (data.success) {
           this.clear();
           for (let i = 0; i < data.data.length; i++) {
-              this.renderItem(data.data[i]);
-            }
+            this.renderItem(data.data[i]);
           }
+        }
       });
     }
   }
@@ -95,9 +90,12 @@ class AccountsWidget {
    * Вызывает App.showPage( 'transactions', { account_id: id_счёта });
    * */
   onSelectAccount( element ) {
-    document.querySelector('.active').classList.remove('active');
-    element.classList.add('active');
-    this.currentAccountId = element.dataset.id;
+    if (document.querySelector('.active.account')) {
+      document.querySelector('.active.account').classList.remove('active');
+    }
+    
+    element.closest('.account').classList.add('active');
+    this.currentAccountId = element.closest('.account').dataset.id;
     App.showPage('transactions', {account_id: this.currentAccountId});
   }
 
@@ -107,20 +105,19 @@ class AccountsWidget {
    * item - объект с данными о счёте
    * */
   getAccountHTML( item ) {
-
-  // element.querySelector('.task__remove').addEventListener('click', event => {
-  //   event.preventDefault();
-  //   delTasks(event);
-  // });
-
     let elementAccount = document.createElement('li');
-    elementAccount.className = 'active account';
+    elementAccount.className = 'account';
     elementAccount.dataset.id = item.id;
     elementAccount.innerHTML = `
-    <a href = "#">
-      <span>${item.name}</span>
-      <span>${item.sum}</span>
-    </a>`;
+      <a href = "#">
+        <span>${item.name}</span>
+        <span>${item.sum} ₽</span>
+      </a>`;
+      
+    elementAccount.addEventListener('click', (event) => {
+      event.preventDefault();
+      this.onSelectAccount(event.target);
+    });
 
     return elementAccount;
   }

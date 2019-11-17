@@ -5,11 +5,8 @@
  * */
 	//URL = '/account';
 
-
-
-
 class Account extends Entity {
 
 }
-	Account.HOST = Entity.HOST;
-	Account.URL = '/account';
+Account.HOST = Entity.HOST;
+Account.URL = '/account';
